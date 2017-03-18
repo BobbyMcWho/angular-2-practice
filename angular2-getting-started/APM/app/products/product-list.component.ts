@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core'
 import {IProduct} from './product'
 import {ProductService} from './product.service'
+
 @Component({
     selector: 'pm-products',
     moduleId: module.id,
@@ -16,6 +17,7 @@ imageMargin: number = 2;
 showImage: boolean = false;
 listFilter: string;
 products: IProduct[];
+errorMessage: string;
 
     constructor(private _productService: ProductService){
     }
@@ -24,7 +26,8 @@ products: IProduct[];
     }
 
     ngOnInit(): void {
-        this.products = this._productService.getProducts();
+        this._productService.getProducts()
+        .subscribe(products => this.products = products,error => this.errorMessage = <any>error)
 
     }
     onRatingClicked(message: string): void {
